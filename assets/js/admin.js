@@ -143,37 +143,74 @@
   function overview() {
     const visible = N.publicData(N.validate(data));
     const checks = [
-      ['profile', 'الصورة الشخصية', Boolean(data.profile.avatarUrl)],
-      ['profile', 'بيانات التواصل', Boolean(data.profile.email || data.profile.github || data.profile.linkedin)],
-      ['projects', 'المشاريع', visible.projects.length > 0],
-      ['certificates', 'الشهادات', visible.certificates.length > 0]
+      ["profile", "الصورة الشخصية", Boolean(data.profile.avatarUrl)],
+      [
+        "profile",
+        "بيانات التواصل",
+        Boolean(
+          data.profile.email || data.profile.github || data.profile.linkedin,
+        ),
+      ],
+      ["projects", "المشاريع", visible.projects.length > 0],
+      ["certificates", "الشهادات", visible.certificates.length > 0],
     ];
-    return `<section class="overview-welcome"><span class="eyebrow" dir="ltr">MN / CONTENT STUDIO</span><h2>${h('أهلاً بك،')} ${e(data.profile.name)}</h2><p>${h('أدر محتواك وصورتك من مكان واحد.')}</p><button class="button primary" data-action="preview">${icon('Eye')}${h('معاينة محلية')}</button></section>
-      <div class="stats-grid">${[['projects','المشاريع','Layers'],['certificates','الشهادات','Award'],['categories','التصنيفات','Tags'],['skills','المهارات','Code2']].map(([key,label,i]) => `<button class="stat-card" data-tab="${key}"><div>${icon(i)}<span>${h(label)}</span></div><strong>${items(key).length}</strong><small>${h('تعديل')}${icon('ArrowUpRight')}</small></button>`).join('')}</div>
-      <div class="admin-content-grid"><section class="panel"><div class="panel-heading"><h2>${h('المحتوى الظاهر للزوار')}</h2>${icon('Eye')}</div><div class="content-checks">${checks.map(([key,label,ready]) => `<button class="${ready ? 'ready' : ''}" data-tab="${key}">${icon(ready ? 'Check' : 'Plus')}<span>${h(label)}</span><small>${h(ready ? 'جاهز للعرض' : 'غير ظاهر بعد')}</small></button>`).join('')}</div><p class="publish-note">${h('الأقسام الفارغة والعناصر التجريبية لا تظهر للزوار.')}</p></section>
-      <section class="panel"><div class="panel-heading"><h2>${h('إجراءات سريعة')}</h2>${icon('Plus')}</div><div class="quick-actions">${[['projects','إضافة مشروع','Layers'],['certificates','إضافة شهادة','Award']].map(([key,label,i]) => `<button data-add="${key}">${icon(i)}<span>${h(label)}</span>${icon('Plus')}</button>`).join('')}<button data-tab="publish">${icon('Upload')}<span>${h('نشر المحتوى')}</span>${icon('ArrowUpRight')}</button></div></section></div>`;
+    return `<section class="overview-welcome"><span class="eyebrow" dir="ltr">MN / CONTENT STUDIO</span><h2>${h("أهلاً بك،")} ${e(data.profile.name)}</h2><p>${h("أدر محتواك وصورتك من مكان واحد.")}</p><button class="button primary" data-action="preview">${icon("Eye")}${h("معاينة محلية")}</button></section>
+      <div class="stats-grid">${[
+        ["projects", "المشاريع", "Layers"],
+        ["certificates", "الشهادات", "Award"],
+        ["categories", "التصنيفات", "Tags"],
+        ["skills", "المهارات", "Code2"],
+      ]
+        .map(
+          ([key, label, i]) =>
+            `<button class="stat-card" data-tab="${key}"><div>${icon(i)}<span>${h(label)}</span></div><strong>${items(key).length}</strong><small>${h("تعديل")}${icon("ArrowUpRight")}</small></button>`,
+        )
+        .join("")}</div>
+      <div class="admin-content-grid"><section class="panel"><div class="panel-heading"><h2>${h("المحتوى الظاهر للزوار")}</h2>${icon("Eye")}</div><div class="content-checks">${checks.map(([key, label, ready]) => `<button class="${ready ? "ready" : ""}" data-tab="${key}">${icon(ready ? "Check" : "Plus")}<span>${h(label)}</span><small>${h(ready ? "جاهز للعرض" : "غير ظاهر بعد")}</small></button>`).join("")}</div><p class="publish-note">${h("الأقسام الفارغة والعناصر التجريبية لا تظهر للزوار.")}</p></section>
+      <section class="panel"><div class="panel-heading"><h2>${h("إجراءات سريعة")}</h2>${icon("Plus")}</div><div class="quick-actions">${[
+        ["projects", "إضافة مشروع", "Layers"],
+        ["certificates", "إضافة شهادة", "Award"],
+      ]
+        .map(
+          ([key, label, i]) =>
+            `<button data-add="${key}">${icon(i)}<span>${h(label)}</span>${icon("Plus")}</button>`,
+        )
+        .join(
+          "",
+        )}<button data-tab="publish">${icon("Upload")}<span>${h("نشر المحتوى")}</span>${icon("ArrowUpRight")}</button></div></section></div>`;
   }
 
   function updatePortrait() {
-    const preview = document.querySelector('[data-profile-portrait]');
-    if (preview) preview.innerHTML = data.profile.avatarUrl && N.safeUrl(data.profile.avatarUrl, 'asset')
-      ? `<img src="${e(N.url(data.profile.avatarUrl))}" alt="${e(data.profile.name)}" style="object-position:50% ${data.profile.avatarPosition ?? 35}%">` : '<span>MN</span>';
-    const output = document.querySelector('[data-position-value]');
-    if (output) output.textContent = (data.profile.avatarPosition ?? 35) + '%';
+    const preview = document.querySelector("[data-profile-portrait]");
+    if (preview)
+      preview.innerHTML =
+        data.profile.avatarUrl && N.safeUrl(data.profile.avatarUrl, "asset")
+          ? `<img src="${e(N.url(data.profile.avatarUrl))}" alt="${e(data.profile.name)}" style="object-position:50% ${data.profile.avatarPosition ?? 35}%">`
+          : "<span>MN</span>";
+    const output = document.querySelector("[data-position-value]");
+    if (output) output.textContent = (data.profile.avatarPosition ?? 35) + "%";
   }
 
   function uploadField(key, value, profile = false, imageOnly = false) {
-    return `<div class="field full-width asset-field" data-asset-field="${key}"><span>${h(key === "avatarUrl" ? "الصورة الشخصية" : key === "resumeUrl" ? "السيرة الذاتية" : key === "imageUrl" ? "صورة الغلاف" : "صورة الشهادة أو ملف PDF")}</span><div class="asset-controls"><input type="text" inputmode="url" aria-label="${h(key === 'avatarUrl' ? 'الصورة الشخصية' : key === 'resumeUrl' ? 'السيرة الذاتية' : key === 'imageUrl' ? 'صورة الغلاف' : 'صورة الشهادة أو ملف PDF')}" dir="ltr" data-${profile ? "profile" : "editor"}-key="${key}" placeholder="https://…" value="${e(value?.startsWith("data:") ? "" : value || "")}"><label class="button secondary"><input class="sr-only" type="file" data-upload-key="${key}" data-upload-profile="${profile}" accept="${imageOnly ? "image/png,image/jpeg,image/webp" : "image/png,image/jpeg,image/webp,application/pdf"}">${icon("Upload")}${h("رفع ملف")}</label><button class="icon-button" type="button" data-remove-file="${key}" data-upload-profile="${profile}" aria-label="${h("إزالة الملف")}">${icon("Trash2")}</button></div><small data-asset-status>${value ? h("تم اختيار الملف.") : "PNG, JPG, WebP" + (imageOnly ? "" : " / PDF") + " · 8 MB"}</small></div>`;
+    return `<div class="field full-width asset-field" data-asset-field="${key}"><span>${h(key === "avatarUrl" ? "الصورة الشخصية" : key === "resumeUrl" ? "السيرة الذاتية" : key === "imageUrl" ? "صورة الغلاف" : "صورة الشهادة أو ملف PDF")}</span><div class="asset-controls"><input type="text" inputmode="url" aria-label="${h(key === "avatarUrl" ? "الصورة الشخصية" : key === "resumeUrl" ? "السيرة الذاتية" : key === "imageUrl" ? "صورة الغلاف" : "صورة الشهادة أو ملف PDF")}" dir="ltr" data-${profile ? "profile" : "editor"}-key="${key}" placeholder="https://…" value="${e(value?.startsWith("data:") ? "" : value || "")}"><label class="button secondary"><input class="sr-only" type="file" data-upload-key="${key}" data-upload-profile="${profile}" accept="${imageOnly ? "image/png,image/jpeg,image/webp" : "image/png,image/jpeg,image/webp,application/pdf"}">${icon("Upload")}${h("رفع ملف")}</label><button class="icon-button" type="button" data-remove-file="${key}" data-upload-profile="${profile}" aria-label="${h("إزالة الملف")}">${icon("Trash2")}</button></div><small data-asset-status>${value ? h("تم اختيار الملف.") : "PNG, JPG, WebP" + (imageOnly ? "" : " / PDF") + " · 8 MB"}</small></div>`;
   }
 
   function profile() {
     const p = data.profile;
-    const field = (key, long = false) => input(labels[key], key, p[key], `data-profile-key="${key}" lang="en"`, long, ['name','role','headlineOne','headlineTwo'].includes(key));
-    return `<div class="section-note">${icon('Languages')}<span>${h('الإنجليزية هي المحتوى الأصلي. أضف ترجمات العربية والتركية لكل قسم.')}</span><button data-tab="translations">${h('اللغات والترجمة')}</button></div>
-      <div class="profile-panels"><section class="panel profile-basics"><h2>${h('معلوماتي الشخصية')}</h2>${['name','role','location','availabilityText'].map(k => field(k)).join('')}${toggle('الفرص والتوفر','available',p.available,'profile')}</section>
-      <section class="panel profile-photo"><h2>${h('الصورة الشخصية')}</h2><div class="profile-portrait-preview" data-profile-portrait>${p.avatarUrl ? `<img src="${e(N.url(p.avatarUrl))}" alt="${e(p.name)}" style="object-position:50% ${p.avatarPosition ?? 35}%">` : '<span>MN</span>'}</div>${uploadField('avatarUrl',p.avatarUrl,true,true)}<label class="field portrait-position"><span>${h('موضع الصورة')}<output data-position-value>${p.avatarPosition ?? 35}%</output></span><input type="range" min="0" max="100" step="1" value="${p.avatarPosition ?? 35}" data-profile-key="avatarPosition"><small>${h('حرّك الصورة حتى يظهر الوجه بوضوح.')}</small></label>${uploadField('resumeUrl',p.resumeUrl,true)}</section>
-      <section class="panel profile-bio"><h2>${h('التعريف والنبذة')}</h2><div class="form-grid">${field('intro',true)}${field('about',true)}</div><details><summary>${h('عناوين قسم النبذة')}</summary><div class="form-grid">${field('headlineOne')}${field('headlineTwo')}</div></details></section>
-      <section class="panel profile-contact"><h2>${h('بيانات التواصل')}</h2><div class="form-grid">${['email','github','linkedin'].map(k => input(labels[k],k,p[k],`data-profile-key="${k}" type="${k === 'email' ? 'email' : 'url'}"`)).join('')}${field('contactTitle')}${field('contactText',true)}</div></section></div>`;
+    const field = (key, long = false) =>
+      input(
+        labels[key],
+        key,
+        p[key],
+        `data-profile-key="${key}" lang="en"`,
+        long,
+        ["name", "role", "headlineOne", "headlineTwo"].includes(key),
+      );
+    return `<div class="section-note">${icon("Languages")}<span>${h("الإنجليزية هي المحتوى الأصلي. أضف ترجمات العربية والتركية لكل قسم.")}</span><button data-tab="translations">${h("اللغات والترجمة")}</button></div>
+      <div class="profile-panels"><section class="panel profile-basics"><h2>${h("معلوماتي الشخصية")}</h2>${["name", "role", "location", "availabilityText"].map((k) => field(k)).join("")}${toggle("الفرص والتوفر", "available", p.available, "profile")}</section>
+      <section class="panel profile-photo"><h2>${h("الصورة الشخصية")}</h2><div class="profile-portrait-preview" data-profile-portrait>${p.avatarUrl ? `<img src="${e(N.url(p.avatarUrl))}" alt="${e(p.name)}" style="object-position:50% ${p.avatarPosition ?? 35}%">` : "<span>MN</span>"}</div>${uploadField("avatarUrl", p.avatarUrl, true, true)}<label class="field portrait-position"><span>${h("موضع الصورة")}<output data-position-value>${p.avatarPosition ?? 35}%</output></span><input type="range" min="0" max="100" step="1" value="${p.avatarPosition ?? 35}" data-profile-key="avatarPosition"><small>${h("حرّك الصورة حتى يظهر الوجه بوضوح.")}</small></label>${uploadField("resumeUrl", p.resumeUrl, true)}</section>
+      <section class="panel profile-bio"><h2>${h("التعريف والنبذة")}</h2><div class="form-grid">${field("intro", true)}${field("about", true)}</div><details><summary>${h("عناوين قسم النبذة")}</summary><div class="form-grid">${field("headlineOne")}${field("headlineTwo")}</div></details></section>
+      <section class="panel profile-contact"><h2>${h("بيانات التواصل")}</h2><div class="form-grid">${["email", "github", "linkedin"].map((k) => input(labels[k], k, p[k], `data-profile-key="${k}" type="${k === "email" ? "email" : "url"}"`)).join("")}${field("contactTitle")}${field("contactText", true)}</div></section></div>`;
   }
 
   function listSection() {
@@ -217,10 +254,10 @@
   }
 
   function publish() {
-    return `<section class="panel publish-main"><span class="publish-icon">${icon('Globe')}</span><h2>${h('نشر المحتوى')}</h2><p>${h('الحفظ محلي. لتنشر التعديلات، نزّل الملفين وارفعهما مكان النسخة الحالية.')}</p>
-      <ol class="publish-steps"><li><span>01</span><div><b>${h('نزّل المحتوى')}</b><p dir="ltr">data.js</p></div></li><li><span>02</span><div><b>${h('نزّل الصفحة المحدثة')}</b><p dir="ltr">index.html</p></div></li><li><span>03</span><div><b>${h('ارفع الملفين إلى استضافتك')}</b><p>${h('داخل المجلد نفسه مع assets وadmin.')}</p></div></li></ol>
-      <div class="button-row"><button class="button primary" data-action="export-public">${icon('Download')}data.js</button><button class="button secondary" data-action="export-homepage">${icon('Download')}index.html</button></div><p class="publish-note">${h('الصفحة المحدثة تتضمن اسمك ومحتواك قبل تحميل JavaScript، حتى لا تظهر نسخة قديمة.')}</p><p class="publish-note">${h('يحتوي ملف النشر على المحتوى المنشور فقط. المسودات تبقى ضمن النسخة الاحتياطية الخاصة.')}</p></section>
-      <div class="admin-content-grid"><section class="panel"><h2>${h('النسخ الاحتياطي')}</h2><p>${h('تصدير نسخة قبل استبدالها')}</p><div class="button-row"><button class="button secondary" data-action="export-backup">${icon('Download')}${h('تنزيل نسخة احتياطية خاصة')}</button><label class="button secondary">${icon('Upload')}${h('استيراد نسخة احتياطية')}<input type="file" class="sr-only" id="import-backup" accept="application/json,.json"></label></div><button class="text-link" data-action="restore-published">${icon('RotateCcw')}${h('استعادة النسخة المنشورة')}</button></section><section class="panel"><h2>${h('ملفاتك')}</h2><p>${h('احتفظ بمجلد assets مع المشروع. الملفات الجديدة التي ترفعها من اللوحة تُضمّن تلقائيًا في data.js.')}</p><p>PNG, JPG, WebP, PDF · 8 MB</p></section></div>`;
+    return `<section class="panel publish-main"><span class="publish-icon">${icon("Globe")}</span><h2>${h("نشر المحتوى")}</h2><p>${h("الحفظ محلي. لتنشر التعديلات، نزّل الملفين وارفعهما مكان النسخة الحالية.")}</p>
+      <ol class="publish-steps"><li><span>01</span><div><b>${h("نزّل المحتوى")}</b><p dir="ltr">data.js</p></div></li><li><span>02</span><div><b>${h("نزّل الصفحة المحدثة")}</b><p dir="ltr">index.html</p></div></li><li><span>03</span><div><b>${h("ارفع الملفين إلى استضافتك")}</b><p>${h("داخل المجلد نفسه مع assets وadmin.")}</p></div></li></ol>
+      <div class="button-row"><button class="button primary" data-action="export-public">${icon("Download")}data.js</button><button class="button secondary" data-action="export-homepage">${icon("Download")}index.html</button></div><p class="publish-note">${h("الصفحة المحدثة تتضمن اسمك ومحتواك قبل تحميل JavaScript، حتى لا تظهر نسخة قديمة.")}</p><p class="publish-note">${h("يحتوي ملف النشر على المحتوى المنشور فقط. المسودات تبقى ضمن النسخة الاحتياطية الخاصة.")}</p></section>
+      <div class="admin-content-grid"><section class="panel"><h2>${h("النسخ الاحتياطي")}</h2><p>${h("تصدير نسخة قبل استبدالها")}</p><div class="button-row"><button class="button secondary" data-action="export-backup">${icon("Download")}${h("تنزيل نسخة احتياطية خاصة")}</button><label class="button secondary">${icon("Upload")}${h("استيراد نسخة احتياطية")}<input type="file" class="sr-only" id="import-backup" accept="application/json,.json"></label></div><button class="text-link" data-action="restore-published">${icon("RotateCcw")}${h("استعادة النسخة المنشورة")}</button></section><section class="panel"><h2>${h("ملفاتك")}</h2><p>${h("احتفظ بمجلد assets مع المشروع. الملفات الجديدة التي ترفعها من اللوحة تُضمّن تلقائيًا في data.js.")}</p><p>PNG, JPG, WebP, PDF · 8 MB</p></section></div>`;
   }
 
   function settings() {
@@ -394,8 +431,18 @@
       const el = ev.target;
 
       if (el.dataset.profileKey) {
-        data.profile[el.dataset.profileKey] = el.type === "checkbox" ? el.checked : el.type === "range" ? Number(el.value) : el.value;
-        if (['avatarUrl','avatarPosition','name'].includes(el.dataset.profileKey)) updatePortrait();
+        data.profile[el.dataset.profileKey] =
+          el.type === "checkbox"
+            ? el.checked
+            : el.type === "range"
+              ? Number(el.value)
+              : el.value;
+        if (
+          ["avatarUrl", "avatarPosition", "name"].includes(
+            el.dataset.profileKey,
+          )
+        )
+          updatePortrait();
         changed();
       }
 
@@ -542,8 +589,11 @@
           render();
         } else if (d.publishToggle) {
           const next = N.clone(data);
-          const item = next[tab]?.find(v => v.id === d.publishToggle);
-          if (item && !item.demo) { item.published = !item.published; if (await save(next)) render(); }
+          const item = next[tab]?.find((v) => v.id === d.publishToggle);
+          if (item && !item.demo) {
+            item.published = !item.published;
+            if (await save(next)) render();
+          }
         } else if (d.add) openEditor(d.add);
         else if (d.edit) openEditor(tab, d.edit);
         else if (d.delete) deleteDialog(d.delete);
@@ -570,22 +620,25 @@
 
           if (source) source[d.removeFile] = "";
 
-          b.closest(".asset-field").querySelector('[data-profile-key],[data-editor-key]').value =
-            "";
+          b
+            .closest(".asset-field")
+            .querySelector("[data-profile-key],[data-editor-key]").value = "";
 
           b
             .closest(".asset-field")
             .querySelector("[data-asset-status]").textContent = "";
 
-          if (d.uploadProfile === 'true') updatePortrait();
+          if (d.uploadProfile === "true") updatePortrait();
           changed();
         } else if (d.action === "save" && !busy) await save();
         else if (d.action === "preview") {
-          const previewWindow = window.open('about:blank', '_blank');
+          const previewWindow = window.open("about:blank", "_blank");
           if (await save()) {
-            const url = N.base + 'index.html?preview=1&lang=' + N.locale;
-            if (previewWindow) { previewWindow.location.href = url; previewWindow.opener = null; }
-            else location.href = url;
+            const url = N.base + "index.html?preview=1&lang=" + N.locale;
+            if (previewWindow) {
+              previewWindow.location.href = url;
+              previewWindow.opener = null;
+            } else location.href = url;
           } else previewWindow?.close();
         } else if (d.action === "logout") {
           if (
@@ -599,17 +652,25 @@
           sessionStorage.removeItem("nova-static-session");
           render();
         } else if (d.action === "export-public") await exportPublic();
-        else if (d.action === 'export-homepage') {
+        else if (d.action === "export-homepage") {
           if (await save()) {
-            const previousBase = N.base, previousLocale = N.locale;
+            const previousBase = N.base,
+              previousLocale = N.locale;
             try {
-              N.base = './'; N.locale = 'en';
+              N.base = "./";
+              N.locale = "en";
               const content = N.renderPortfolio(data);
-              N.download('index.html', N.pageDocument({ content, data }), 'text/html;charset=utf-8');
-            } finally { N.base = previousBase; N.locale = previousLocale; }
+              N.download(
+                "index.html",
+                N.pageDocument({ content, data }),
+                "text/html;charset=utf-8",
+              );
+            } finally {
+              N.base = previousBase;
+              N.locale = previousLocale;
+            }
           }
-        }
-        else if (d.action === "export-backup")
+        } else if (d.action === "export-backup")
           N.download(
             "mn-private-backup.json",
             JSON.stringify(N.validate(data), null, 2),
@@ -686,7 +747,7 @@
           const next = N.clone(data),
             { section, item } = editor;
 
-          if ('demo' in item) item.demo = false;
+          if ("demo" in item) item.demo = false;
           const arr =
               section === "skills" ? next.profile.skills : next[section],
             index = arr.findIndex((v) => v.id === item.id);
@@ -778,15 +839,20 @@
       }
     });
 
-    document.addEventListener('keydown', async event => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's' && N.isLoggedIn()) {
+    document.addEventListener("keydown", async (event) => {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === "s" &&
+        N.isLoggedIn()
+      ) {
         event.preventDefault();
-        if (document.getElementById('editor-form')) document.getElementById('editor-form').requestSubmit();
+        if (document.getElementById("editor-form"))
+          document.getElementById("editor-form").requestSubmit();
         else if (!busy && !saving) await save();
       }
-      if (event.key === 'Escape') {
-        document.querySelector('.admin-sidebar')?.classList.remove('open');
-        const scrim = document.querySelector('.sidebar-scrim');
+      if (event.key === "Escape") {
+        document.querySelector(".admin-sidebar")?.classList.remove("open");
+        const scrim = document.querySelector(".sidebar-scrim");
         if (scrim) scrim.hidden = true;
       }
     });
