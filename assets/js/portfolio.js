@@ -94,7 +94,7 @@
     return `<div class="language-root" data-locale="${N.locale}" dir="${N.locale === 'ar' ? 'rtl' : 'ltr'}"><div class="portfolio" data-motion="${motion ? 'on' : 'off'}">
       <canvas class="site-particles" aria-hidden="true"></canvas>
       <a href="#main-content" class="skip-link">${h('انتقل إلى المحتوى')}</a>
-      ${preview ? `<div class="preview-notice">${h('هذه معاينة لتعديلاتك المحلية وليست النسخة المنشورة.')} <a href="${N.base}index.html?lang=${N.locale}">${h('العودة للنسخة المنشورة')}</a></div>` : ''}
+      ${preview ? `<div class="preview-notice">${h('هذه معاينة لتعديلاتك المحلية وليست النسخة المنشورة.')} <a href="${N.base}index.html">${h('العودة للنسخة المنشورة')}</a></div>` : ''}
       <header class="site-header"><div class="nav-wrap section-shell">
         <a href="#home" class="logo-link" aria-label="MN — ${e(p.name)}">${N.brand()}</a>
         <nav id="primary-navigation" aria-label="${h('التنقل الرئيسي')}">${nav.map(([id,label]) => `<a href="#${id}" ${id === 'home' ? 'aria-current="location"' : ''}>${h(label)}</a>`).join('')}</nav>
